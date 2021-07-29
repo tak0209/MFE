@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ModuleFederationPlugin } = require("webpack").container;
 const path = require("path");
+const deps = require('./package.json').dependencies;
 
 module.exports = {
     entry: "./src/index",
@@ -10,17 +11,17 @@ module.exports = {
         port: 3001,
     },
     output: {
-        publicPath: "auto",
+        publicPath: 'http://localhost:3001/',
+    },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js'],
     },
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
-                loader: "babel-loader",
+                test: /\.(js|jsx|tsx|ts)$/,
+                loader: 'ts-loader',
                 exclude: /node_modules/,
-                options: {
-                    presets: ["@babel/preset-react"],
-                },
             },
         ],
     },
@@ -30,7 +31,19 @@ module.exports = {
             remotes: {
                 app2: "app2@http://localhost:3002/remoteEntry.js",
             },
-            shared: { react: { singleton: true }, "react-dom": { singleton: true } },
+            shared: {
+                ...deps,
+                react: {
+                    singleton: true,
+                    eager: true,
+                    requiredVersion: deps.react
+                },
+                'react-dom': {
+                    singleton: true,
+                    eager: true,
+                    requiredVersion: deps['react-dom'],
+                },
+            }
         }),
         new HtmlWebpackPlugin({
             template: "./src/index.html",
