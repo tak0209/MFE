@@ -14,7 +14,7 @@ module.exports = {
     publicPath: 'http://localhost:3002/',
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.css'],
   },
   module: {
     rules: [
@@ -23,15 +23,20 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
   plugins: [
     new ModuleFederationPlugin({
       name: 'app2',
-      filename: 'remoteEntry.js',
+      filename: 'remoteEntry2.js',
       exposes: {
         './App': './src/App',
-        './button': './src/button'
+        './button': './src/button',
+        './grid': './src/grid'
       },
       shared: {
         ...deps,
