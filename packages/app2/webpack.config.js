@@ -2,6 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 const path = require('path');
 const deps = require('./package.json').dependencies;
+const DashboardPlugin = require("@module-federation/dashboard-plugin");
 
 module.exports = {
   entry: './src/index',
@@ -54,6 +55,16 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
+    }),
+    new DashboardPlugin({
+      dashboardURL: "http://localhost:3000/api/update",
+      filename: "dashboard.json",
+      metadata: {
+        source: {
+          url: "http://localhost:3002"
+        },
+        remote: "http://localhost:3002/remoteEntry.js",
+      }
     }),
   ],
 };

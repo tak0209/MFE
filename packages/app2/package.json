@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.5",
+    "@module-federation/dashboard-plugin": "^2.2.0",
     "css-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
     "style-loader": "^3.2.1",
